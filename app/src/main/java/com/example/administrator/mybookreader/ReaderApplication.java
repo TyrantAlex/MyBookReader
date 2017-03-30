@@ -48,6 +48,13 @@ public class ReaderApplication extends Application{
                 .build();
     }
 
+    /**
+     * 初始化夜间模式
+     */
+    protected void initNightMode(){
+
+    }
+
     public AppComponent getAppComponent(){
         return appComponent;
     }
