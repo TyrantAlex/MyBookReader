@@ -30,6 +30,11 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+    /**
+     *
+     * 获取Application的Component实例后建立连接关系的具体实现
+     * @param appComponent
+     */
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerMainComponent

@@ -58,6 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity{
 
         ButterKnife.bind(this);
 
+        //获得Application提供的Component实例
         setupActivityComponent(ReaderApplication.getsInstance().getAppComponent());
 
         mCommonToolbar = ButterKnife.findById(this, R.id.common_toolbar);

@@ -2,11 +2,16 @@ package com.example.administrator.mybookreader;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 
+import com.example.administrator.mybookreader.base.Constant;
+import com.example.administrator.mybookreader.base.CrashHandler;
 import com.example.administrator.mybookreader.component.AppComponent;
 import com.example.administrator.mybookreader.component.DaggerAppComponent;
 import com.example.administrator.mybookreader.moudle.AppMoudle;
 import com.example.administrator.mybookreader.moudle.BookApiMoudle;
+import com.example.administrator.mybookreader.utils.AppUtils;
+import com.example.administrator.mybookreader.utils.LogUtils;
 import com.example.administrator.mybookreader.utils.SharedPreferencesUtil;
 
 /**
@@ -31,6 +36,8 @@ public class ReaderApplication extends Application{
         super.onCreate();
         sInstance = this;
         initComponent();
+        AppUtils.init(this);
+        CrashHandler.getInstance().init(this);
         initPrefs();
     }
 
@@ -41,6 +48,9 @@ public class ReaderApplication extends Application{
         SharedPreferencesUtil.init(getApplicationContext(), getPackageName() + "_preference", Context.MODE_MULTI_PROCESS);
     }
 
+    /**
+     * 初始化Component
+     */
     private void initComponent(){
         appComponent = DaggerAppComponent.builder()
                 .bookApiMoudle(new BookApiMoudle())
@@ -52,9 +62,19 @@ public class ReaderApplication extends Application{
      * 初始化夜间模式
      */
     protected void initNightMode(){
-
+        boolean isNight = SharedPreferencesUtil.getInstance().getBoolean(Constant.ISNIGHT);
+        LogUtils.d("isNight = " + isNight);
+        if(isNight){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
+    /**
+     * 返回Component实例
+     * @return
+     */
     public AppComponent getAppComponent(){
         return appComponent;
     }
