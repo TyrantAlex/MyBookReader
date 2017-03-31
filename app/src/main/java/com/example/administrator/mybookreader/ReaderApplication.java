@@ -39,6 +39,7 @@ public class ReaderApplication extends Application{
         AppUtils.init(this);
         CrashHandler.getInstance().init(this);
         initPrefs();
+        initNightMode();
     }
 
     /**
