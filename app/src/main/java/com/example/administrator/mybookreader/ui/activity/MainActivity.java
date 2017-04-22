@@ -1,10 +1,13 @@
 package com.example.administrator.mybookreader.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.administrator.mybookreader.R;
 import com.example.administrator.mybookreader.base.BaseActivity;
@@ -92,8 +95,29 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initToolBar() {
         mCommonToolbar.setLogo(R.mipmap.logo);
-        setTitle("Python");
+        setTitle("life is short");
     }
 
+    /**
+     * 创建菜单栏:包含search按钮
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_search:
+                startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 
