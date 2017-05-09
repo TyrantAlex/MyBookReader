@@ -25,6 +25,35 @@
         <attr name="indicator_style" />
     </declare-styleable>
 
+    <declare-styleable name="TagGroup">
+        <attr name="atg_isAppendMode" format="boolean" />
+        <attr name="atg_inputHint" format="string" />
+
+        <attr name="atg_borderColor" format="color" />
+        <attr name="atg_textColor" format="color" />
+        <attr name="atg_backgroundColor" format="color" />
+
+        <attr name="atg_dashBorderColor" format="color" />
+        <attr name="atg_inputHintColor" format="color" />
+        <attr name="atg_inputTextColor" format="color" />
+
+        <attr name="atg_checkedBorderColor" format="color" />
+        <attr name="atg_checkedTextColor" format="color" />
+        <attr name="atg_checkedMarkerColor" format="color" />
+        <attr name="atg_checkedBackgroundColor" format="color" />
+        <attr name="atg_pressedBackgroundColor" format="color" />
+        <attr name="atg_borderStrokeWidth" format="dimension" />
+        <attr name="atg_textSize" format="dimension" />
+        <attr name="atg_horizontalSpacing" format="dimension" />
+        <attr name="atg_verticalSpacing" format="dimension" />
+        <attr name="atg_horizontalPadding" format="dimension" />
+        <attr name="atg_verticalPadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="Themes">
+        <attr name="tagGroupStyle" format="reference" />
+    </declare-styleable>
+
     <!--模板dialog自定义view属性-->
     <declare-styleable name="LoadingView">
         <attr name="loadding_color" format="color" />
@@ -39,6 +68,30 @@
 
         <attr name="ring_width" format="dimension" />
         <attr name="ring_radius" format="dimension" />
+    </declare-styleable>
+
+    <!--recycleview自定义属性-->
+    <declare-styleable name="superrecyclerview">
+        <attr name="layout_empty" format="reference" />
+        <attr name="layout_progress" format="reference" />
+        <attr name="layout_error" format="reference" />
+        <attr name="recyclerClipToPadding" format="boolean" />
+        <attr name="recyclerPadding" format="dimension" />
+        <attr name="recyclerPaddingTop" format="dimension" />
+        <attr name="recyclerPaddingBottom" format="dimension" />
+        <attr name="recyclerPaddingLeft" format="dimension" />
+        <attr name="recyclerPaddingRight" format="dimension" />
+        <attr name="scrollbarStyle">
+            <enum name="insideOverlay" value="0x0" />
+            <enum name="insideInset" value="0x01000000" />
+            <enum name="outsideOverlay" value="0x02000000" />
+            <enum name="outsideInset" value="0x03000000" />
+        </attr>
+        <attr name="scrollbars">
+            <enum name="vertical" value="1" />
+            <enum name="horizontal" value="0" />
+            <enum name="none" value="2" />
+        </attr>
     </declare-styleable>
 
 </resources>
