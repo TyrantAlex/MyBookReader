@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 轻度封装的自定义RecyclerView
+ * 包含覆盖empty页面, error页面, progress等待View, 无网络页面
  * Created by Administrator on 2017/5/5 0005.
  */
 
@@ -40,16 +42,28 @@ public class EasyRecyclerView extends FrameLayout{
     public static final String TAG = "EasyRecyclerView";
 
     public static boolean DEBUG = false;
+
+    //RecyclerView主体
     protected RecyclerView mRecycler;
+
+    //提示无网络的TextView
     protected TextView tipView;
+
+    //等待ProgressView
     protected ViewGroup mProgressView;
+
+    //空白view
     protected ViewGroup mEmptyView;
+
+    //出错view
     protected ViewGroup mErrorView;
 
+    /**
+     * 一些自定义属性
+     */
     private int mProgressId;
     private int mEmptyId;
     private int mErrorId;
-
     protected boolean mClipToPadding;
     protected int mPadding;
     protected int mPaddingTop;
@@ -59,12 +73,16 @@ public class EasyRecyclerView extends FrameLayout{
     protected int mScrollbarStyle;
     protected int mScrollbar;
 
+    //内部RecyclerView滑动监听
     protected RecyclerView.OnScrollListener mInternalOnScrollListener;
+
+    //对外RecyclerView滑动监听
     protected RecyclerView.OnScrollListener mExternalOnScrollListener;
 
     //主要的自定义view
     protected SwipeRefreshLayout mPtrLayout;
 
+    //刷新监听
     protected OnRefreshListener mRefreshListener;
 
     public List<RecyclerView.ItemDecoration> decorations = new ArrayList<>();
