@@ -77,6 +77,18 @@ public abstract class BaseRVActivity<T> extends BaseActivity implements OnLoadMo
     }
 
     /**
+     * 三个参数
+     * 反射出传入的实例,再调用两个参的
+     * @param clazz
+     * @param refreshable
+     * @param loadmoreable
+     */
+    protected void initAdapter(Class<? extends RecyclerArrayAdapter<T>> clazz, boolean refreshable, boolean loadmoreable) {
+        mAdapter = (RecyclerArrayAdapter) createInstance(clazz);
+        initAdapter(refreshable, loadmoreable);
+    }
+
+    /**
      * 利用反射获取对象实例
      * @param cls
      * @return

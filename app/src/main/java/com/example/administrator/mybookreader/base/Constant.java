@@ -12,6 +12,8 @@ import com.example.administrator.mybookreader.utils.FileUtils;
 
 public class Constant {
 
+    public static final String IMG_BASE_URL = "http://statics.zhuishushenqi.com";
+
     public static final String ISNIGHT = "isNight";
 
     public static String PATH_DATA = FileUtils.createRootPath(AppUtils.getAppContext()) + "/cache";

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author yuyh.
- * @date 16/8/7.
+ * 控制热词颜色实体类
+ * 随机
  */
 public class TagColor {
 
