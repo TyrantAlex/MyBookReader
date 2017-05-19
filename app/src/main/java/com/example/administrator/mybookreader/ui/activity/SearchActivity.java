@@ -24,6 +24,7 @@ import com.example.administrator.mybookreader.base.BaseRVActivity;
 import com.example.administrator.mybookreader.bean.SearchDetail;
 import com.example.administrator.mybookreader.component.AppComponent;
 import com.example.administrator.mybookreader.component.DaggerBookComponent;
+import com.example.administrator.mybookreader.manager.CacheManager;
 import com.example.administrator.mybookreader.ui.adapter.AutoCompleteAdapter;
 import com.example.administrator.mybookreader.ui.adapter.SearchHistoryAdapter;
 import com.example.administrator.mybookreader.ui.contract.SearchContract;
@@ -33,6 +34,7 @@ import com.example.administrator.mybookreader.view.TagColor;
 import com.example.administrator.mybookreader.view.TagGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -245,7 +247,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
             public boolean onQueryTextSubmit(String query) {
                 key = query;
                 mPresenter.getSearchResultList(query);
-                saveSearchResult(query);
+                saveSearchHistory(query);
                 return false;
             }
 
@@ -284,40 +286,104 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
         return true;
     }
 
-    private void initTagGroup() {
+    /**
+     * 保存搜索历史记录
+     * 最多20条
+     * @param query
+     */
+    private void saveSearchHistory(String query) {
+        //取出缓存历史记录list
+        List<String> list = CacheManager.getInstance().getSearchHistory();
+        if (list == null){
+            list = new ArrayList<>();
+        }else{ //list不为空则判断是否重复,重复则去掉以前的并把当次查询结果加到第一个位置
+            Iterator<String> iterator = list.iterator();
+            while(iterator.hasNext()){
+                String item = iterator.next();
+                if (TextUtils.equals(query, item)){
+                    iterator.remove();
+                }
+            }
+            list.add(0, query);
+        }
+        //判断list是否大于20个元素,大于则去掉末尾的元素
+        int size = list.size();
+        if (size > 20){
+            for (int i = size - 1; i >= 20; i--){
+                list.remove(i);
+            }
+        }
+        //保存list
+        CacheManager.getInstance().saveSearchHistory(list);
+        //重新初始化搜索历史
+        initSearchHistory();
     }
 
-    private void saveSearchResult(String query) {
+    /**
+     * 初始化搜索历史
+     */
+    private void initSearchHistory() {
+        List<String> list = CacheManager.getInstance().getSearchHistory();
+        mHisAdapter.clear();
+        if (list != null && list.size() > 0){
+            tvClear.setEnabled(true);
+            mHisAdapter.addAll(list);
+        }else{
+            tvClear.setEnabled(false);
+        }
+        mHisAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 展开SearchView查询
+     * @param key
+     */
+    private void search(String key) {
+        MenuItemCompat.expandActionView(searchMenuItem);
+        if (!TextUtils.isEmpty(key)){
+            searchView.setQuery(key, true);
+            saveSearchHistory(key);
+        }
     }
 
     private void initSearchResult() {
+        gone(mTagGroup, mLayoutHotWord, rlHistory);
+        visible(mRecyclerView);
+        if (mListPopupWindow.isShowing()){
+            mListPopupWindow.dismiss();
+        }
     }
 
-    private void initSearchHistory() {
-
-    }
-
-    private void search(String s) {
+    private void initTagGroup() {
+        visible(mTagGroup, mLayoutHotWord, rlHistory);
+        gone(mRecyclerView);
+        if (mListPopupWindow.isShowing()){
+            mListPopupWindow.dismiss();
+        }
     }
 
     @Override
     public void onItemClick(int position) {
-
+        SearchDetail.SearchBooks data = mAdapter.getItem(position);
+//        BookDetailActivity.startActivity(this, data._id);
     }
 
     @Override
     public void showError() {
-
+        loaddingError();
     }
 
     @Override
     public void complete() {
-
+        mRecyclerView.setRefreshing(false);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 
 }
