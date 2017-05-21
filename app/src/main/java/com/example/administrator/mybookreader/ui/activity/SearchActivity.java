@@ -346,6 +346,9 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
         }
     }
 
+    /**
+     * 初始化搜索结果
+     */
     private void initSearchResult() {
         gone(mTagGroup, mLayoutHotWord, rlHistory);
         visible(mRecyclerView);
