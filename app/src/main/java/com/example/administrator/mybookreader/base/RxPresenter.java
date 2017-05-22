@@ -14,7 +14,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class RxPresenter<T extends BaseContract.BaseView> implements BaseContract.BasePresenter<T>{
 
-    protected T view;
+    protected T mView;
 
     /**
      * 使用CompositeSubscription来持有所有的Subscriptions，然后在onDestroy()或者onDestroyView()里取消所有的订阅
@@ -44,12 +44,12 @@ public class RxPresenter<T extends BaseContract.BaseView> implements BaseContrac
 
     @Override
     public void attachView(T view) {
-        this.view = view;
+        this.mView = view;
     }
 
     @Override
     public void detachView() {
-        this.view = null;
+        this.mView = null;
         unSubscribe();
     }
 }
