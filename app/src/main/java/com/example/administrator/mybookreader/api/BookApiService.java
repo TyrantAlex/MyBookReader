@@ -1,8 +1,11 @@
 package com.example.administrator.mybookreader.api;
 
+import com.example.administrator.mybookreader.bean.AutoComplete;
 import com.example.administrator.mybookreader.bean.HotWord;
+import com.example.administrator.mybookreader.bean.SearchDetail;
 
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -20,4 +23,20 @@ public interface BookApiService {
      */
     @GET("/book/hot-word")
     Observable<HotWord> getHotWord();
+
+    /**
+     * 关键字自动补全
+     * @param query
+     * @return
+     */
+    @GET("/book/auto-complete")
+    Observable<AutoComplete> autoComplete(@Query("query") String query);
+
+    /**
+     * 书籍查询
+     * @param query
+     * @return
+     */
+    @GET("/book/fuzzy-search")
+    Observable<SearchDetail> searchBooks(@Query("query") String query);
 }

@@ -2,7 +2,9 @@ package com.example.administrator.mybookreader.ui.presenter;
 
 import com.example.administrator.mybookreader.api.BookApi;
 import com.example.administrator.mybookreader.base.RxPresenter;
+import com.example.administrator.mybookreader.bean.AutoComplete;
 import com.example.administrator.mybookreader.bean.HotWord;
+import com.example.administrator.mybookreader.bean.SearchDetail;
 import com.example.administrator.mybookreader.ui.contract.SearchContract;
 import com.example.administrator.mybookreader.utils.LogUtils;
 import com.example.administrator.mybookreader.utils.RxUtil;
@@ -15,8 +17,10 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Scheduler;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 搜索中间层
@@ -36,7 +40,7 @@ public class SearchPresenter extends RxPresenter<SearchContract.View> implements
     public void getHotWordList() {
         String key = StringUtils.creatAcacheKey("hot-word-list");
         /**
-         *
+         *  将通过网络获取的数据保存到缓存中
          */
         Observable<HotWord> fromNetWork = bookApi.getHotWord().compose(RxUtil.<HotWord>rxCacheListHelper(key));
 
@@ -61,16 +65,58 @@ public class SearchPresenter extends RxPresenter<SearchContract.View> implements
                         }
                     }
                 });
+        //添加到整体的订阅管理中
         addSubscribe(rxSubscription);
     }
 
     @Override
     public void getAutoCompleteList(String query) {
+        Subscription rxSubscription = bookApi.getAutoComplete(query).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AutoComplete>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(AutoComplete autoComplete) {
+                        LogUtils.d("getAutoCompleteList" + autoComplete.keywords);
+                        List<String> list = autoComplete.keywords;
+                        if (list != null && !list.isEmpty() && mView != null){
+                            mView.showAutoCompleteList(list);
+                        }
+                    }
+                });
+        addSubscribe(rxSubscription);
     }
 
     @Override
     public void getSearchResultList(String query) {
+        Subscription rxSubscription = bookApi.getSearchResult(query).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SearchDetail>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(SearchDetail searchDetail) {
+                        List<SearchDetail.SearchBooks> list = searchDetail.books;
+                        if (list != null && !list.isEmpty() && mView != null){
+                            mView.showSearchResultList(list);
+                        }
+                    }
+                });
+        addSubscribe(rxSubscription);
     }
 }
