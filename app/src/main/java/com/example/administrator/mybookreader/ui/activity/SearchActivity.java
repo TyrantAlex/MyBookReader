@@ -368,7 +368,7 @@ public class SearchActivity extends BaseRVActivity<SearchDetail.SearchBooks> imp
     @Override
     public void onItemClick(int position) {
         SearchDetail.SearchBooks data = mAdapter.getItem(position);
-//        BookDetailActivity.startActivity(this, data._id);
+        BookDetailActivity.startActivity(this, data._id);
     }
 
     @Override
